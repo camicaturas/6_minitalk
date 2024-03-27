@@ -1,9 +1,10 @@
 ################################################
 ## ARGUMENTS
 
-#NAME = libft_expanded.a
 NAME_CLIENT = client
 NAME_SERVER = server
+BONUS_NAME_CLIENT = client_bonus
+BONUS_NAME_SERVER = server_bonus
 CFLAGS = -Wall -Wextra -Werror
 CC = cc
 
@@ -26,26 +27,58 @@ WHITE	= \033[0;37m        # White
 ################################################
 ## SOURCES
 
-# wildcard te lee todos los archivos .c que hay en la carpeta
-SOURCES = $(wildcard *.c)
-OBJECTS = $(SOURCES:.c=.o)
+LIBFT = libft/libft_expanded.a
+
+SRCS_SERVER = server.c
+SRCS_CLIENT = client.c
+BONUSC_SRCS_SERVER = client_bonus.c 
+BONUSS_SRCS_CLIENT = server_bonus.c
+OBJS_SERVER = $(SRCS_SERVER:.c=.o)
+OBJS_CLIENT = $(SRCS_CLIENT:.c=.o)
+BONUSC_OBJS_SERVER = $(BONUSC_SRCS_SERVER:.c=.o)
+BONUSC_OBJS_CLIENT = $(BONUSS_SRCS_CLIENT:.c=.o)
 
 ################################################
 ## RULES
 
-all: $(NAME)
-
-$(NAME): $(OBJECTS)
-	$(AR) -r $@ $?
-	@echo "$(GREEN)$(NAME) COMPILED!! $(END_COLOR)"
 %.o: %.c
-	$(CC) -c $(CFLAGS) $?
-clean:
-	rm -f $(OBJECTS)
-	rm -f *.so
-fclean: clean
-	rm -f $(NAME)
-re: fclean all
-.PHONY: all clean fclean re
+		@$(CC) $(CFLAGS) -c $< -o $@
 
-################################################
+all : server client client_bonus server_bonus
+
+server: libft $(OBJS_SERVER)
+		@ $(CC) $(CFLAGS) -o $(NAME_SERVER) $(OBJS_SERVER) $(LIBFT)
+		@echo "$(GREEN)$(NAME_SERVER) COMPILED!! $(END_COLOR)"
+
+
+client: libft $(OBJS_CLIENT)
+		@ $(CC) $(CFLAGS) -o $(NAME_CLIENT) $(OBJS_CLIENT) $(LIBFT)
+		@echo "$(GREEN)$(NAME_CLIENT) COMPILED!! $(END_COLOR)"
+
+#bonus : client_bonus server_bonus
+
+server_bonus: libft $(BONUSC_OBJS_SERVER)
+		@ $(CC) $(CFLAGS) -o $(BONUS_NAME_SERVER) $(BONUSC_OBJS_SERVER) $(LIBFT)
+		@echo "$(GREEN)$(BONUS_NAME_SERVER) COMPILED!! $(END_COLOR)"
+
+client_bonus: libft $(BONUSC_OBJS_CLIENT)
+		@ $(CC) $(CFLAGS) -o $(BONUS_NAME_CLIENT) $(BONUSC_OBJS_CLIENT) $(LIBFT)
+		@echo "$(GREEN)$(BONUS_NAME_CLIENT) COMPILED!! $(END_COLOR)"
+
+libft:
+		@ make -C libft/
+
+clean:
+		@ rm -rf $(OBJS_SERVER) $(OBJS_CLIENT)
+		@ rm -rf $(NAME_SERVER) $(NAME_CLIENT)
+		@ rm -rf $(BONUSC_OBJS_SERVER) $(BONUSC_OBJS_CLIENT)
+		@ rm -rf $(BONUS_NAME_SERVER) $(BONUS_NAME_CLIENT)
+
+fclean: clean
+		@ rm -rf  $(NAME_SERVER) $(NAME_CLIENT)
+		@ rm -rf  $(BONUS_NAME_SERVER) $(BONUS_NAME_CLIENT)
+		@ rm -rf libft_expanded.a
+		@ make -C libft/ clean
+
+re: fclean all
+.PHONY: all bonus libft clean fclean re

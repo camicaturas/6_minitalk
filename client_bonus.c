@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cberneri < cberneri@student.42prague.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:14:37 by cberneri          #+#    #+#             */
-/*   Updated: 2024/03/27 17:05:54 by cberneri         ###   ########.fr       */
+/*   Updated: 2024/03/27 17:05:59 by cberneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ void	error_controller(int error_index)
 		ft_printf("\n Error: The format provided is not correct.\n\n");
 	if (error_index >= 4)
 		ft_printf("\n Error: Too many parameters supplied. \n\n");
+}
+
+void	message_confirmation(int sig)
+{
+	if (sig == SIGUSR2)
+		ft_printf("Message recieved!!\n");
 }
 
 void	signal_data(char character, int pid)
@@ -56,10 +62,11 @@ int	main(int argc, char **argv)
 			signal_data(argv[2][i], pid);
 			i++;
 		}
-
+		signal(SIGUSR2, message_confirmation);
+		signal_data(pid, '\0');
 	}
 	else
-	{	
+	{
 		error_controller(argc);
 		return (1);
 	}
