@@ -6,7 +6,7 @@
 /*   By: cberneri < cberneri@student.42prague.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:14:37 by cberneri          #+#    #+#             */
-/*   Updated: 2024/03/27 16:42:23 by cberneri         ###   ########.fr       */
+/*   Updated: 2024/04/01 12:16:31 by cberneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,16 @@ void	binary_controller(int sig)
 {
 	static int	octet;
 	static int	i;
+/*
+	0001 = 0x01 << 0
+	0010 = 0x01 << 1
+	0100 = 0x01 << 2
+	1000 = 0x01 << 3
+
+	1000
+	1000 |= 0010
+	1010
+*/
 
 	if (sig == SIGUSR1)
 		i |= (0x01 << octet);

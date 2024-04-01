@@ -6,14 +6,14 @@
 /*   By: cberneri < cberneri@student.42prague.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:14:37 by cberneri          #+#    #+#             */
-/*   Updated: 2024/03/27 17:10:42 by cberneri         ###   ########.fr       */
+/*   Updated: 2024/04/01 11:39:37 by cberneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ucontext.h>
 #include <signal.h>
 #include "libft/libft.h"
-
+/*
 void	binary_controllers(int sig, siginfo_t *info, void *context)
 {
 	static int	octet;
@@ -32,6 +32,7 @@ void	binary_controllers(int sig, siginfo_t *info, void *context)
 		i = 0;
 	}
 }
+*/
 /*
 int	main(int argc, char **argv)
 {
@@ -72,11 +73,13 @@ int	main(int argc, char **argv)
 	}
 	pid = getpid();
 	ft_printf("%d\n", pid);
+	ft_printf("test");
 	act.sa_sigaction = binary_controllers;
 	sigemptyset(&act.sa_mask);
 	act.sa_flags = 0;
 	while (argc == 1)
 	{
+	ft_printf("test2");
 		sigaction(SIGUSR1, &act, NULL);
 		sigaction(SIGUSR2, &act, NULL);
 		pause();
